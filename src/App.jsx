@@ -1,4 +1,6 @@
 import { useCallback, useRef, useEffect, useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 
 function App() {
   const [length, setLength] = useState(8);
@@ -8,8 +10,10 @@ function App() {
 
   //useRef hook
   const passwordRef = useRef(null)
+  const copyRef = useRef(null)
 
   const passwordGenerator = useCallback(() => {
+    copyRef.current.innerHTML = "copy"
     let pass = "";
     let str = "ABCDEFGHIJKLMNOPQRSTUVWXYXabcdefghijklmnopqrstuvwxyx";
 
@@ -26,8 +30,9 @@ function App() {
   }, [length, numberAllowed, charAllowed, setPassword]);
 
   const copyPasswordToClipboard = useCallback(()=>{
-    passwordRef.current?.select()
     window.navigator.clipboard.writeText(password)
+    //change the copy button text to copied 
+  copyRef.current.innerHTML = "copied"
   },[password])
 
   useEffect(()=> {
@@ -51,6 +56,7 @@ function App() {
           />
           <button 
           onClick={copyPasswordToClipboard}
+          ref={copyRef}
           className="outline-none bg-blue-700 text-white px-3 py-0.5 shrink-0">
             copy
           </button>
